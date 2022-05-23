@@ -1,16 +1,11 @@
-import React, { useMemo } from 'react';
-import { useTable, Column } from 'react-table'
+import React, { useMemo, useEffect } from 'react';
+import { useTable, Column } from 'react-table';
+import { useResizeDetector } from 'react-resize-detector';
 import type { IItem } from 'types';
-import { ItemRow } from '../ItemRow';
 import styles from './index.module.scss';
 
 interface IItemListProps {
   items: IItem[];
-}
-
-interface IItemDemo {
-  col1: string;
-  col2: string;
 }
 
 interface IRowData {
@@ -25,7 +20,17 @@ interface IRowData {
   updatedOn: string;
 }
 
+const hideColumnConfig: { [key: string]: number } = {
+  'Summary': 400,
+  'Author': 600,
+  'Service': 768,
+  'Updated': 800,
+  'Created': 1024,
+};
+
 export const ItemList: React.FC<IItemListProps> = ({ items }) => {
+  const { width, ref } = useResizeDetector();
+
   const data: IRowData[] = useMemo(() => items.map(item => {
     const { entity: { data } } = item;
     return {
@@ -45,11 +50,12 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
     () => [
       {
         Header: 'Type #',
-        accessor: 'type', // accessor is the "key" in the data
+        accessor: 'type', // accessor is the "key" in the data.
       },
       {
         Header: 'Summary',
         accessor: 'summary',
+
       },
       {
         Header: 'Private',
@@ -58,6 +64,7 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
       {
         Header: 'Status',
         accessor: 'status',
+        maxWidth: 100,
       },
       {
         Header: 'Service',
@@ -71,10 +78,10 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
         Header: 'Created',
         accessor: 'createdOn',
       },
-      // {
-      //   Header: 'Updated',
-      //   accessor: 'updatedOn',
-      // },
+      {
+        Header: 'Updated',
+        accessor: 'updatedOn',
+      },
     ],
     []
   )
@@ -83,6 +90,7 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    allColumns,
     rows,
     prepareRow,
   } = useTable({
@@ -90,9 +98,15 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
     data,
   })
 
+  useEffect(() => {
+    Object.keys(hideColumnConfig)
+      .forEach(headerName => allColumns
+        .find(col => col.Header === headerName)?.toggleHidden(width! < hideColumnConfig[headerName]));
+  }, [width]);
+
   return (
-    <div>
-      <table {...getTableProps()}>
+    <div ref={ref} className="w-full">
+      <table className={styles.table} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -103,12 +117,12 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {rows.map(row => {
             prepareRow(row)
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <td className="whitespace-nowrap text-ellipsis overflow-hidden px-3" {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
             )
