@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { useTable, Column } from 'react-table';
 import { useResizeDetector } from 'react-resize-detector';
+import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
 import type { IItem } from 'types';
 import styles from './index.module.scss';
 
@@ -60,6 +61,7 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
       {
         Header: 'Private',
         accessor: 'isPrivate',
+        Cell: props => props.value ? <AiOutlineCheck color='green' /> : <AiOutlineClose color="red" />
       },
       {
         Header: 'Status',
@@ -122,7 +124,9 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td className="whitespace-nowrap text-ellipsis overflow-hidden px-3" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <td className="whitespace-nowrap text-ellipsis overflow-hidden px-3" {...cell.getCellProps()}>
+                    {cell.render('Cell')}
+                  </td>
                 })}
               </tr>
             )
