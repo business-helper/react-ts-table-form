@@ -2,6 +2,8 @@ import React, { useMemo, useEffect } from 'react';
 import { useTable, Column } from 'react-table';
 import { useResizeDetector } from 'react-resize-detector';
 import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
+import { BsQuestionSquare } from 'react-icons/bs';
+import moment from 'moment';
 import type { IItem } from 'types';
 import styles from './index.module.scss';
 
@@ -47,11 +49,16 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
     }
   }), [items])
 
+  const formatDate = (strDate: string) => {
+    return moment(strDate).format('DD/MM/YYYY HH:mm:ss')
+  }
+
   const columns: readonly Column<IRowData>[] = React.useMemo(
     () => [
       {
         Header: 'Type #',
-        accessor: 'type', // accessor is the "key" in the data.
+        accessor: 'type',
+        Cell: props => <div className="flex items-center"><BsQuestionSquare className="mr-2" />{props.value}</div>
       },
       {
         Header: 'Summary',
@@ -79,10 +86,12 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
       {
         Header: 'Created',
         accessor: 'createdOn',
+        Cell: ({ value }) => formatDate(value),
       },
       {
         Header: 'Updated',
         accessor: 'updatedOn',
+        Cell: ({ value }) => formatDate(value),
       },
     ],
     []
