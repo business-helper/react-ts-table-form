@@ -77,4 +77,5 @@ interface IFormOption {
 export interface IFormElementBase {
   meta: IFormField;
   value?: any;
+  onChange?: (e: any, value?: any) => void;
 }
