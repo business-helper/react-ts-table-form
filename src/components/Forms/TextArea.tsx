@@ -7,6 +7,7 @@ export const TextArea: React.FC<IFormElementBase> = ({ meta, value, onChange: ha
     label={meta.displayName}
     inputElement={
       <textarea
+        data-testid="textarea-element"
         name={meta.name}
         value={value}
         onChange={handleOnChange}

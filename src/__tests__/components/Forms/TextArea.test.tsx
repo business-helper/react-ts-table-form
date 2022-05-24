@@ -1,12 +1,12 @@
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import type { IFormField } from 'types';
-import { Select } from "components/Forms/Select";
+import { TextArea } from "components/Forms/TextArea";
 
 const metaData: IFormField = {
   name: "KnownErrorTypeId",
   displayName: "Knowledge Item Type",
-  type: 'select',
+  type: 'text',
   "x-options": [
     { "value": 1, "text": "FAQ" },
     { "value": 2, "text": "Advice" },
@@ -14,36 +14,37 @@ const metaData: IFormField = {
   ],
 };
 const handleOnChange = jest.fn();
-const selected = 1;
+const text = 'Dummy Text';
 
-describe("/components/Forms/Select", () => {
+describe("/components/Forms/TextArea", () => {
   beforeEach(() => {
-    render(<Select
+    render(<TextArea
       meta={metaData}
-      value={selected}
+      value={text}
       onChange={handleOnChange}
     />);
   })
 
   afterEach(cleanup)
 
-  test('should render label and select', () => {
+  test('should render label and textarea', () => {
     // Arrange
     const labelElement = screen.getByText(new RegExp(metaData.displayName, 'i'));
-    const selectElement = screen.getByTestId('select-element') as HTMLSelectElement;
+    const textareaElement = screen.getByTestId('textarea-element') as HTMLTextAreaElement;
 
     // Assert
     expect(labelElement).toBeInTheDocument();
-    expect(selectElement).toBeInTheDocument();
-    expect(selectElement.value).toEqual(selected.toString());
+    expect(textareaElement).toBeInTheDocument();
+    expect(textareaElement.value).toEqual(text.toString());
   });
 
-  test('should trigger change listener on clicking unselected option', () => {
+  test('should trigger change listener', () => {
     // Arrange
-    const selectElement = screen.getByTestId('select-element') as HTMLSelectElement;
+    const textareaElement = screen.getByTestId('textarea-element') as HTMLTextAreaElement;
+    const newValue = 'New Text';
 
     // Act
-    fireEvent.change(selectElement, { target: { value: 2 } });
+    fireEvent.change(textareaElement, { target: { value: newValue } });
 
     // Assert
     expect(handleOnChange).toHaveBeenCalledTimes(1);
