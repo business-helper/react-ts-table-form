@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import itemsReducer from "./slices/items";
+import { itemsReducer, formsReducer } from "./slices";
 
 export const store = configureStore({
   reducer: {
     items: itemsReducer,
+    forms: formsReducer,
   },
 });
 

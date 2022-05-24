@@ -3,7 +3,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import { DefaultLayout } from 'layouts/DefaultLayout';
 import { HomePage } from 'pages/Home';
-import { getAllItems } from 'store/slices/items';
+import { getAllItems, getFormInfo } from 'store/slices';
 import { useAppDispatch } from 'store/hooks';
 
 const App: React.FC = () => {
@@ -11,6 +11,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(getAllItems());
+    dispatch(getFormInfo());
   })
 
   return (

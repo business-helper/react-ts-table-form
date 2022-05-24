@@ -50,3 +50,26 @@ export interface IItem {
   entity: IEntity;
   links: ILink[];
 }
+
+export interface IForm {
+  name: string;
+  displayName: string;
+  fieldsets: IFormFieldSet;
+}
+
+interface IFormFieldSet {
+  displayName: string;
+  fields: IFormField[];
+}
+
+interface IFormField {
+  name: string;
+  displayName: string;
+  type: string;
+  "x-options": IFormOption[];
+}
+
+interface IFormOption {
+  value: any;
+  text: string;
+}
