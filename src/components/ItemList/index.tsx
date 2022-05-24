@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
-import { useTable, Column } from 'react-table';
+import { useTable, useSortBy, Column } from 'react-table';
 import { useResizeDetector } from 'react-resize-detector';
-import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineCheck, AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { BsQuestionSquare } from 'react-icons/bs';
 import moment from 'moment';
 import type { IItem } from 'types';
@@ -53,49 +53,53 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
     return moment(strDate).format('DD/MM/YYYY HH:mm:ss')
   }
 
-  const columns: readonly Column<IRowData>[] = React.useMemo(
-    () => [
-      {
-        Header: 'Type #',
-        accessor: 'type',
-        Cell: props => <div className="flex items-center"><BsQuestionSquare className="mr-2" />{props.value}</div>
-      },
-      {
-        Header: 'Summary',
-        accessor: 'summary',
+  const columns: readonly Column<IRowData>[] = useMemo(() => [
+    {
+      Header: 'Type #',
+      accessor: 'type',
+      Cell: props => <div className="flex items-center"><BsQuestionSquare className="mr-2" />{props.value}</div>
+    },
+    {
+      Header: 'Summary',
+      accessor: 'summary',
 
+    },
+    {
+      Header: 'Private',
+      accessor: 'isPrivate',
+      Cell: props => props.value ? <AiOutlineCheck color='green' /> : <AiOutlineClose color="red" />,
+      sortType: (rowA, rowB, id, desc) => {
+        // console.log('[sortBy]', rowA, rowB, id, desc);
+        console.log(rowA.values[id], typeof rowA.values[id]);
+        if (rowA.values[id] && !rowB.values[id]) return -1;
+        if (!rowA.values[id] && rowB.values[id]) return 1;
+        return 0;
       },
-      {
-        Header: 'Private',
-        accessor: 'isPrivate',
-        Cell: props => props.value ? <AiOutlineCheck color='green' /> : <AiOutlineClose color="red" />
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        maxWidth: 100,
-      },
-      {
-        Header: 'Service',
-        accessor: 'service',
-      },
-      {
-        Header: 'Author',
-        accessor: 'author',
-      },
-      {
-        Header: 'Created',
-        accessor: 'createdOn',
-        Cell: ({ value }) => formatDate(value),
-      },
-      {
-        Header: 'Updated',
-        accessor: 'updatedOn',
-        Cell: ({ value }) => formatDate(value),
-      },
-    ],
-    []
-  )
+    },
+    {
+      Header: 'Status',
+      accessor: 'status',
+      maxWidth: 100,
+    },
+    {
+      Header: 'Service',
+      accessor: 'service',
+    },
+    {
+      Header: 'Author',
+      accessor: 'author',
+    },
+    {
+      Header: 'Created',
+      accessor: 'createdOn',
+      Cell: ({ value }) => formatDate(value),
+    },
+    {
+      Header: 'Updated',
+      accessor: 'updatedOn',
+      Cell: ({ value }) => formatDate(value),
+    },
+  ], []);
 
   const {
     getTableProps,
@@ -104,16 +108,19 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
     allColumns,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data,
-  })
+  } = useTable(
+    {
+      columns,
+      data,
+    },
+    useSortBy
+  )
 
   useEffect(() => {
     Object.keys(hideColumnConfig)
       .forEach(headerName => allColumns
         .find(col => col.Header === headerName)?.toggleHidden(width! < hideColumnConfig[headerName]));
-  }, [width]);
+  }, [width, allColumns]);
 
   return (
     <div ref={ref} className="w-full">
@@ -122,7 +129,16 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th className="whitespace-nowrap" {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th className="whitespace-nowrap" {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <div className="flex items-center">
+                    {column.render('Header')}
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? <AiOutlineArrowDown />
+                        : <AiOutlineArrowUp />
+                      : ''}
+                  </div>
+                </th>
               ))}
             </tr>
           ))}
