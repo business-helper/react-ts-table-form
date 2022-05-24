@@ -11,25 +11,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.form-group {
-  @apply mb-6;
-
-  label {
-    @apply block text-sm mb-2 uppercase;
-  }
-
-  input,
-  select,
-  textarea,
-  .form-control {
-    @apply w-full text-black px-4 py-2;
-  }
-
-  .form-error {
-    @apply text-red-600 text-sm mt-2;
-  }
-}
-
 .button {
   @apply bg-gray-300 text-black px-6 py-3 rounded-lg
             hover:bg-gray-500 transition-all duration-300;
