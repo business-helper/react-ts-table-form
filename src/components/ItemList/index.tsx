@@ -9,6 +9,7 @@ import styles from './index.module.scss';
 
 interface IItemListProps {
   items: IItem[];
+  onSelectRow: (identifier: string) => void;
 }
 
 interface IRowData {
@@ -31,14 +32,14 @@ const hideColumnConfig: { [key: string]: number } = {
   'Created': 1024,
 };
 
-export const ItemList: React.FC<IItemListProps> = ({ items }) => {
+export const ItemList: React.FC<IItemListProps> = ({ items, onSelectRow }) => {
   const { width, ref } = useResizeDetector();
 
   const data: IRowData[] = useMemo(() => items.map(item => {
     const { entity: { data } } = item;
     return {
       id: data.id,
-      type: `${data.type.prefix}-${data.type.id}`,
+      type: data.number,
       summary: data.summary,
       isPrivate: data.isPrivate,
       status: data.status.name,
@@ -68,9 +69,7 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
       Header: 'Private',
       accessor: 'isPrivate',
       Cell: props => props.value ? <AiOutlineCheck color='green' /> : <AiOutlineClose color="red" />,
-      sortType: (rowA, rowB, id, desc) => {
-        // console.log('[sortBy]', rowA, rowB, id, desc);
-        console.log(rowA.values[id], typeof rowA.values[id]);
+      sortType: (rowA, rowB, id) => {
         if (rowA.values[id] && !rowB.values[id]) return -1;
         if (!rowA.values[id] && rowB.values[id]) return 1;
         return 0;
@@ -123,7 +122,7 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
   }, [width, allColumns]);
 
   return (
-    <div ref={ref} className="w-full">
+    <div ref={ref}>
       <table className={styles.table} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -147,7 +146,10 @@ export const ItemList: React.FC<IItemListProps> = ({ items }) => {
           {rows.map(row => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()}>
+              <tr
+                {...row.getRowProps()}
+                className="cursor-pointer"
+                onClick={() => onSelectRow(row.values['type'])}>
                 {row.cells.map(cell => {
                   return <td className="whitespace-nowrap text-ellipsis overflow-hidden px-3" {...cell.getCellProps()}>
                     {cell.render('Cell')}
