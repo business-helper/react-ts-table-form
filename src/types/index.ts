@@ -66,7 +66,7 @@ export interface IFormField {
   name: string;
   displayName: string;
   type: string;
-  "x-options": IFormOption[];
+  "x-options"?: IFormOption[];
 }
 
 interface IFormOption {
