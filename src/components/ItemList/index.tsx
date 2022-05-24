@@ -122,7 +122,7 @@ export const ItemList: React.FC<IItemListProps> = ({ items, onSelectRow }) => {
   }, [width, allColumns]);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="px-3">
       <table className={styles.table} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
