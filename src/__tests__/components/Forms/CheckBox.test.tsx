@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { CheckBox } from "components/Forms/CheckBox";
-import { IFormField } from 'types';
+import type { IFormField } from 'types';
 
 const metaData: IFormField = {
   name: "tmpIsPrivate",
