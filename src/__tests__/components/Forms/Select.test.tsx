@@ -30,7 +30,7 @@ describe("/components/Forms/Select", () => {
   test('should render label and select', () => {
     // Arrange
     const labelElement = screen.getByText(new RegExp(metaData.displayName, 'i'));
-    const selectElement = screen.getByTestId('select-element') as HTMLSelectElement;
+    const selectElement = screen.getByTestId(`${metaData.type}-${metaData.name}`) as HTMLSelectElement;
 
     // Assert
     expect(labelElement).toBeInTheDocument();
@@ -38,9 +38,19 @@ describe("/components/Forms/Select", () => {
     expect(selectElement.value).toEqual(selected.toString());
   });
 
+  test('should render options properly', () => {
+    metaData["x-options"]!.map(option => {
+      // Arrange
+      const optionElement = screen.getByTestId(`${metaData.type}-${metaData.name}-${option.value}`);
+
+      // Assert
+      expect(optionElement).toBeInTheDocument();
+    })
+  });
+
   test('should trigger change listener on clicking unselected option', () => {
     // Arrange
-    const selectElement = screen.getByTestId('select-element') as HTMLSelectElement;
+    const selectElement = screen.getByTestId(`${metaData.type}-${metaData.name}`) as HTMLSelectElement;
 
     // Act
     fireEvent.change(selectElement, { target: { value: 2 } });

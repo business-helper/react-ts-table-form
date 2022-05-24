@@ -36,8 +36,17 @@ export const DynamicForm: React.FC<IDynamicFormProps> = ({ meta, values, onCance
   }, [values])
 
   return (
-    <form className="p-4 bg-gray-200" onSubmit={handleOnSubmit}>
-      <h3 className="text-center text-xl font-bold mb-6">{meta?.displayName}</h3>
+    <form
+      data-testid={`form-${meta.name}`}
+      className="p-4 bg-gray-200"
+      onSubmit={handleOnSubmit}
+    >
+      <h3
+        data-testid={`form-title-${meta.name}`}
+        className="text-center text-xl font-bold mb-6"
+      >
+        {meta?.displayName}
+      </h3>
       {
         meta?.fieldsets.map((fieldset, i) =>
           <fieldset key={i}>

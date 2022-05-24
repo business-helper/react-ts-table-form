@@ -25,7 +25,7 @@ describe("/components/Forms/CheckBox", () => {
   test('should render label and checkbox', () => {
     // Arrange
     const labelElement = screen.getByText(new RegExp(metaData.displayName, 'i'));
-    const checkBox = screen.getByLabelText(new RegExp(metaData.displayName, 'i')) as HTMLInputElement;
+    const checkBox = screen.getByTestId(`${metaData.type}-${metaData.name}`) as HTMLInputElement;
 
     // Assert
     expect(labelElement).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("/components/Forms/CheckBox", () => {
   test('should trigger change listener on clicking label or checkbox', () => {
     // Arrange
     const labelElement = screen.getByText(new RegExp(metaData.displayName, 'i'));
-    const checkBox = screen.getByLabelText(new RegExp(metaData.displayName, 'i')) as HTMLInputElement;
+    const checkBox = screen.getByTestId(`${metaData.type}-${metaData.name}`) as HTMLInputElement;
 
     // Act
     fireEvent.click(checkBox);

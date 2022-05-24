@@ -18,11 +18,13 @@ const text = 'Dummy Text';
 
 describe("/components/Forms/TextArea", () => {
   beforeEach(() => {
-    render(<TextArea
-      meta={metaData}
-      value={text}
-      onChange={handleOnChange}
-    />);
+    render(
+      <TextArea
+        meta={metaData}
+        value={text}
+        onChange={handleOnChange}
+      />
+    );
   })
 
   afterEach(cleanup)
@@ -30,7 +32,7 @@ describe("/components/Forms/TextArea", () => {
   test('should render label and textarea', () => {
     // Arrange
     const labelElement = screen.getByText(new RegExp(metaData.displayName, 'i'));
-    const textareaElement = screen.getByTestId('textarea-element') as HTMLTextAreaElement;
+    const textareaElement = screen.getByTestId(`${metaData.type}-${metaData.name}`) as HTMLTextAreaElement;
 
     // Assert
     expect(labelElement).toBeInTheDocument();
@@ -40,7 +42,7 @@ describe("/components/Forms/TextArea", () => {
 
   test('should trigger change listener', () => {
     // Arrange
-    const textareaElement = screen.getByTestId('textarea-element') as HTMLTextAreaElement;
+    const textareaElement = screen.getByTestId(`${metaData.type}-${metaData.name}`) as HTMLTextAreaElement;
     const newValue = 'New Text';
 
     // Act

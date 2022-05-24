@@ -7,11 +7,15 @@ describe("/components/Forms/FormGroup", () => {
     // Arrange
     const inputTestId = 'form-group-input-tmp';
     const labelText = 'Form Group Label';
-    render(<FormGroup
-      label={labelText}
-      inputElement={<input data-testid={inputTestId} />}
-    />);
-    const labelElement = screen.getByText(new RegExp(labelText, 'i'));
+    const formGroupName = 'test';
+    render(
+      <FormGroup
+        name={formGroupName}
+        label={labelText}
+        inputElement={<input data-testid={inputTestId} />}
+      />
+    );
+    const labelElement = screen.getByTestId(`form-group-label-${formGroupName}`);
     const inputElement = screen.getByTestId(inputTestId);
 
     // Assert

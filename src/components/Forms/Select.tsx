@@ -4,10 +4,11 @@ import { FormGroup } from './FormGroup';
 
 export const Select: React.FC<IFormElementBase> = ({ meta, value, onChange: handleOnChange }) => {
   return <FormGroup
+    name={meta.name}
     label={meta.displayName}
     inputElement={
       <select
-        data-testid="select-element"
+        data-testid={`${meta.type}-${meta.name}`}
         name={meta.name}
         value={value}
         onChange={handleOnChange}
@@ -15,7 +16,7 @@ export const Select: React.FC<IFormElementBase> = ({ meta, value, onChange: hand
         {
           meta['x-options']?.map((option, i) =>
             <option
-              data-testid={`select-option-${option.value}`}
+              data-testid={`${meta.type}-${meta.name}-${option.value}`}
               key={i}
               value={option.value}
             >
