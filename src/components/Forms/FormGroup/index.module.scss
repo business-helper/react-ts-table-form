@@ -1,0 +1,17 @@
+.formGroup {
+  @apply my-4;
+  label {
+    @apply block mb-2;
+  }
+
+  textarea,
+  select,
+  input[type="text"] {
+    @apply w-full border border-solid border-gray-200 rounded-md px-2;
+    min-height: 2.75rem;
+  }
+
+  textarea {
+    min-height: 5rem;
+  }
+}

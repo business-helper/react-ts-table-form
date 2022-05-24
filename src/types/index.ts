@@ -54,7 +54,7 @@ export interface IItem {
 export interface IForm {
   name: string;
   displayName: string;
-  fieldsets: IFormFieldSet;
+  fieldsets: IFormFieldSet[];
 }
 
 interface IFormFieldSet {
@@ -62,7 +62,7 @@ interface IFormFieldSet {
   fields: IFormField[];
 }
 
-interface IFormField {
+export interface IFormField {
   name: string;
   displayName: string;
   type: string;
@@ -72,4 +72,9 @@ interface IFormField {
 interface IFormOption {
   value: any;
   text: string;
+}
+
+export interface IFormElementBase {
+  meta: IFormField;
+  value?: any;
 }

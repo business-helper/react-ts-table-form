@@ -17,7 +17,9 @@ export const HomePage: React.FC = () => {
         />
       </div>
       <div className={activeRow ? styles.formWrapper : 'hidden'}>
-        <DynamicForm />
+        <DynamicForm
+          name="updateKnowledgeItemBasicDetails"
+        />
       </div>
     </div>
   )
