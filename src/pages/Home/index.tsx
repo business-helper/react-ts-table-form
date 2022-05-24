@@ -6,6 +6,8 @@ import styles from './index.module.scss';
 
 export const HomePage: React.FC = () => {
   const items = useAppSelector(state => state.items);
+  const forms = useAppSelector(state => state.forms);
+  const form = useMemo(() => forms.find(f => f.name === 'updateKnowledgeItemBasicDetails'), [forms]);
   const [activeRow, setActiveRow] = useState<string>(''); // entity.data.number
 
   const selectedRowData = useMemo(() => {
@@ -32,7 +34,7 @@ export const HomePage: React.FC = () => {
       </div>
       <div className={activeRow ? styles.formWrapper : 'hidden'}>
         <DynamicForm
-          name="updateKnowledgeItemBasicDetails"
+          meta={form!}
           values={selectedRowData}
           onSubmit={handleOnFormSubmit}
           onCancel={() => setActiveRow('')}

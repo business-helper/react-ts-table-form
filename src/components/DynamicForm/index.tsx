@@ -1,17 +1,15 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useAppSelector } from 'store/hooks';
+import React, { useEffect, useState } from 'react';
+import type { IForm } from 'types';
 import { Select, TextArea, CheckBox } from '../Forms';
 
 interface IDynamicFormProps {
-  name: string;
+  meta: IForm;
   values?: any;
   onCancel: () => void;
   onSubmit: (data: any) => void;
 }
 
-export const DynamicForm: React.FC<IDynamicFormProps> = ({ name, values, onCancel: handleOnCancel, onSubmit: _handleOnSubmit }) => {
-  const forms = useAppSelector(state => state.forms);
-  const formMeta = useMemo(() => forms.find(f => f.name === name), [forms, name]);
+export const DynamicForm: React.FC<IDynamicFormProps> = ({ meta, values, onCancel: handleOnCancel, onSubmit: _handleOnSubmit }) => {
   const [formData, setFormData] = useState(values);
 
   const handleOnChange = (e: any) => {
@@ -39,9 +37,9 @@ export const DynamicForm: React.FC<IDynamicFormProps> = ({ name, values, onCance
 
   return (
     <form className="p-4 bg-gray-200" onSubmit={handleOnSubmit}>
-      <h3 className="text-center text-xl font-bold mb-6">{formMeta?.displayName}</h3>
+      <h3 className="text-center text-xl font-bold mb-6">{meta?.displayName}</h3>
       {
-        formMeta?.fieldsets.map((fieldset, i) =>
+        meta?.fieldsets.map((fieldset, i) =>
           <fieldset key={i}>
             <h4 className="text-lg font-semibold">{fieldset.displayName}</h4>
             {fieldset.fields?.map(field => {
