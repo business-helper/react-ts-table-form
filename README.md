@@ -14,6 +14,7 @@ Once a table row is clicked, it show split view for a update form, which shows d
 - React Icons
 - Jest
 - Cypress
+- Continuous Integration
 
 ## Structure
 
