@@ -5,6 +5,10 @@ It loads data from json file and show them in the react table.
 The table is responsive hiding columns according to the table width.
 Once a table row is clicked, it show split view for a update form, which shows dynamic fields based on the passed meta data.
 
+## Demo
+
+You can check the demo by clicking [here](https://react-table-mv.herokuapp.com/).
+
 ## Tech stack
 
 - React v17
@@ -70,7 +74,7 @@ You can run the following commands to start the application and for the unit/int
 ```bash
 # npm
 npm install
-npm start # run the application on local
+npm run dev # run the application on local
 npm run test # run unit testing
 npm run test:e2e # integration testing using cypress
 npm run cypress:run # silent mode of cypress test
@@ -78,7 +82,7 @@ npm run cypress:run # silent mode of cypress test
 
 # yarn
 yarn
-yarn start # start the application on local
+yarn dev # start the application on local
 yarn run test # unit testing
 yarn test:e2e # integration testing using cypress
 yarn cypress:run # silent mode of cypress test
