@@ -21,7 +21,6 @@
 # temp
 /tmp
 .github
-cypress
 
 npm-debug.log*
 yarn-debug.log*

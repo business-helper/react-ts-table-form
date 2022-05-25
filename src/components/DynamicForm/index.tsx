@@ -35,6 +35,8 @@ export const DynamicForm: React.FC<IDynamicFormProps> = ({ meta, values, onCance
     setFormData(values);
   }, [values])
 
+  if (!meta) return null;
+
   return (
     <form
       data-testid={`form-${meta.name}`}
